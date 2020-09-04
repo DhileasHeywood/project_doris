@@ -1,0 +1,17 @@
+Requirements:
+- Receive a document with requirements to fill out.
+- search the bid-o-matic to find matching blocks of text, either with tags or with free text
+- selects blocks of text and copies them into the document.
+- To be able to add new blocks of text when needed
+- to be able to easily edit existing blocks of text when needed
+	- text nees to be in a wysiwyg or markup format for easy editing
+- provide and add tags for the text
+- Be able to look at the version history of the text block (git?)
+- When text is copied, the formatting needs to be carried over.
+- Needs to handle images.
+- be able to delete blocks of text if needed
+
+
+MVP
+- input headers from tender documents and output appropriate responses which can 
+  be edited and exported or updated.
