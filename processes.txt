@@ -1,0 +1,41 @@
+Doris Processes
+
+- We'll have a type 'entry' that'll inform the model in python and the record in elasticsearch
+- properties of each entry that will be searchable are
+  - title (stored in full and searchable)
+  - body (stored in full and searchable (analysed and unanalysed))
+  - date added (be able to sort on that)
+  - version (but talk to Richard)(need to sort on version)
+  - user (aggregatable? but also filter and search (analysed and unanalysed))
+  - tags (need to be filtered, searchable (analysed and unanalysed)) autocomplete? (DOAJ project keywords uses this. Code already exists :D)
+
+## Ask Richard about user supplied tags
+
+- Image upload is going to need to be asynchronous endpoint that stores the file and
+  returns a URL
+
+
+- Have a Doris API that gives results asynchronously
+What will the back end need?
+operations that need to be performed on a given record type:
+- Get
+- Put?
+- Post
+Need to do various types of search
+- search for entry via its various attributes.
+  - do a get request to get the ID of the specific record that needs to be extracted
+- create users/update users (dialogue that allows you to change your username?)
+- Get a user (to log in)
+
+- Images.
+  - post and get a URL response
+  - Get to display the images.
+  - Images will be stored in a file on the web server, so we might not need the
+    app to handle the GET. The server might be able to handle that.
+
+## Where does Richard want this to be deployed? Can anyone use it? (Security will be affected)
+## Should images be searchable?
+
+## Assemblies - Do they need to be saved, or just exported?
+
+## Look at flask api project
