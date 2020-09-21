@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="24ace170-56d0-4d77-8ddc-2e8fb0d763df" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/test/unit/test_entry.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit/test_image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit/test_search.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit/test_user_login.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unit/test_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit/test_model.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,12 +55,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600700673993</updated>
-      <workItem from="1600700681947" duration="1067000" />
+      <workItem from="1600700681947" duration="2940000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="449" y="188" width="1022" height="737" key="SettingsEditor" timestamp="1600700991592">
