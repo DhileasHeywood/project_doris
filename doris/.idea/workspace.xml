@@ -20,12 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24ace170-56d0-4d77-8ddc-2e8fb0d763df" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test/unit/test_entry.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/unit/test_image.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/unit/test_search.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/unit/test_user_login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/unit/test_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit/test_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unit/test_image.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit/test_image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unit/test_search.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit/test_search.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +51,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1600700673993</updated>
-      <workItem from="1600700681947" duration="2940000" />
+      <workItem from="1600700681947" duration="3265000" />
     </task>
     <servers />
   </component>

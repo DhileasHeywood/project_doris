@@ -4,3 +4,6 @@
 
 # test the different permutations to make sure you're narrowing down results correctly
 
+# test sorting on age
+
+# test aggregating on user

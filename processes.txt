@@ -21,18 +21,26 @@ operations that need to be performed on a given record type:
 - Get
 - Put?
 - Post
+
+- Entries.
 Need to do various types of search
 - search for entry via its various attributes.
   - do a get request to get the ID of the specific record that needs to be extracted
+
+Users
 - create users/update users (dialogue that allows you to change your username?)
 - Get a user (to log in)
+- create a user model and a database in elasticsearch
+  - properties on a user
+    - username(should never be analysed)
+    - password
 
 - Images.
   - post and get a URL response
   - Get to display the images.
   - Images will be stored in a file on the web server, so we might not need the
     app to handle the GET. The server might be able to handle that.
-
+  - give the image a unique identifier (UUID) on save so we don't overwrite existing records
 ## Where does Richard want this to be deployed? Can anyone use it? (Security will be affected)
 ## Should images be searchable?
 
