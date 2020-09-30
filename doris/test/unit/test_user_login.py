@@ -2,8 +2,7 @@ import pytest
 from doris import auth
 
 
-def test_hello():
-    assert greeting == "Hello, World!"
+
 
 # save new user details to database
 
