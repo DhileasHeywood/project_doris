@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <h1>{% block title %}What's your name?{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        <label for="username">Name</label>
+        <input type="username" id="username" required>
+    </form>
+{% endblock %}

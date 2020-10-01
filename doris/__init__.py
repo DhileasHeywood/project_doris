@@ -24,10 +24,7 @@ def create_app(test_config=None):
 
 app = create_app()
 
-@app.route("/hello")
-def hello():
-    greeting = "Hello, World!"
-    return greeting
+
 
 if __name__ == "__main__":
     app.run()

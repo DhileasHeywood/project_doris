@@ -3,11 +3,10 @@
 <nav>
     <h1>Doris</h1>
     <ul>
-        {% if g.user %}
-            <li><span>{{ g.user["username"] }}</span>
+        {% if session["username"] %}
+            <li><span>Hello {{ session["username"] }}</span>
             <li><a href="{{ url_for("auth.logout") }}">Change User</a>
         {% else %}
-            <li><a href="{{ url_for("auth.register") }}">Register</a>
             <li><a href="{{ url_for("auth.login") }}">Log In</a>
         {% endif %}
     </ul>
