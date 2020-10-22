@@ -5,13 +5,6 @@ from flask import (
 
 bp = Blueprint("auth", __name__, url_prefix="/auth")
 
-@bp.route("/")
-def index():
-    if "username" in session:
-        return render_template("app/index.html")
-
-    return redirect(url_for("auth.login"))
-
 @bp.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":

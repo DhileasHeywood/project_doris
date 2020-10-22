@@ -23,7 +23,7 @@ class ElasticsearchObject(object):
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        return(response)
+        return response
 
     @classmethod
     def retrieve(cls, _id):
@@ -37,19 +37,21 @@ class ElasticsearchObject(object):
 
         return cls(**response.json()["_source"])
 
-    def update(self, _id, new_body):
+    def update(self, new_body):
         url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/" + self.data["id"]
         # version_url = app.config.get("VERSION_URL") + self.es_type + "/"
         # need to save a copy of the previous versions in a version index
 
+        self.data["body"] = new_body
         payload = json.dumps(self.data)
         headers = {
             'Content-Type': 'application/json'
         }
-        version_response = requests.request("POST", version_url, headers=headers, data=payload)
+        response = requests.request("POST", url, headers=headers, data=payload)
 
-        self.data["body"] = new_body
-        payload = json.dumps(self.data)
+        return response
+
+
 
     def delete(self, _id):
         url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/" + _id
