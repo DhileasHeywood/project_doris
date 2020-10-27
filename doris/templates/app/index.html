@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 
 {% block header %}
-    <h1>{% block title %}This is where I would put my title if I had one.{% endblock %}</h1>
+    <h1>{% block title %}Welcome to Doris.{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    <p>This is where I would put my content if I had any.</p>
+    <form method="post">
+        <input type="submit" value="New Bid">
+    </form>
+
+     <form method="post">
+        <label for="old_bid">Search Bid</label>
+        <input name="old_bid" id="old_bid" >
+        <input type="submit" value="Go">
+    </form>
 {% endblock %}

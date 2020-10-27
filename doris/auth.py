@@ -9,7 +9,7 @@ bp = Blueprint("auth", __name__, url_prefix="/auth")
 def login():
     if request.method == "POST":
         session["username"] = request.form["username"]
-        return redirect(url_for("auth.index"))
+        return redirect(url_for("application.index"))
 
     return render_template("auth/login.html")
 
@@ -17,4 +17,4 @@ def login():
 def logout():
     # remove the username from the session if it's there.
     session.pop("username", None)
-    return redirect(url_for("auth.index"))
+    return redirect(url_for("application.index"))
