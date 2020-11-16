@@ -1,17 +1,26 @@
 {% extends "base.html" %}
 
 {% block header %}
-    <h1>{% block title %}Welcome to Doris.{% endblock %}</h1>
+    <div id="heading-container" class="container">
+        <div class="text-center my-5">
+            <h1>{% block title %}Welcome to The Parlour.{% endblock %}</h1>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        <input type="submit" value="New Bid">
-    </form>
-
-     <form method="post">
-        <label for="old_bid">Search Bid</label>
-        <input name="old_bid" id="old_bid" >
-        <input type="submit" value="Go">
-    </form>
+    <div id="main-container" class="text-center row mx-0 mt-5 aw-grid">
+        <div class="d-inline-block col">
+            <form method="post">
+                <input type="submit" value="New Bid" id="new_bid" name="new_bid">
+            </form>
+        </div>
+        <div class="d-inline-block col">
+             <form method="post">
+                <label for="old_bid">Search Bid</label>
+                <input name="old_bid" id="old_bid" >
+                <input type="submit" value="Go">
+            </form>
+        </div>
+    </div>
 {% endblock %}

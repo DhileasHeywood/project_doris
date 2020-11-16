@@ -13,9 +13,9 @@ def index():
         return render_template("app/index.html")
 
     # The start page needs to have the ability to start a new bid, and to search existing bids
-    # if request.method == "POST":
-        # if button == "new bid":
-            # return redirect(url_for("app.entry"))
+    if request.method == "POST":
+        if request.form["New Bid"]:
+            return redirect(url_for("app.entry"))
 
         # elif button == "search":
             # search bids using some magical wizardry.
@@ -33,4 +33,4 @@ def entry():
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
 
 
-    pass
+    return render_template("app/entry.html")
