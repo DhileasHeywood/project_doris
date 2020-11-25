@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id="upper_container" class="container">
+        <div class="row mb-2">
+            <div class="col-5">
+                <div class="row mx-2">
+                    <div class="mb-2 col-4">Section Title:</div>
+                    <div class="mb-2 col-8 border border-dark d-inline-block">"Groovy Title"{{ session["section_title"]
+                            }}</div>
+                </div>
+            </div>
+
+            <div class="col-7">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <div class="border border-dark">"Current Bid Name"</div>
+                        </div>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <form method="post" class="float-right">
+                            <button type="button" name="change_bid">Change Bid</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="lower_container" class="container">
+        <div class="row mb-2">
+            <div class="col-5">
+                <div class="m-1" style="height: 750px;">
+                    <div class="border border-dark h-100"></div>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="m-1" style="height: 750px;">
+                    <div class="border border-dark h-100"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-4 mr-auto">
+                        <form method="post">
+                            <button type="submit" name="move_up" value="move_up">Move Up</button>
+                        </form>
+                    </div>
+                    <div class="col-4">
+                        <form method="post">
+                            <button type="submit" name="move_down" value="move_down">Move Down</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="row">
+                    <div class="col-4 mr-auto">
+                        <form method="post">
+                            <button type="submit" name="save_section" value="save_section">Save Section</button>
+                        </form>
+                    </div>
+                    <div class="col-4">
+                        <form method="post">
+                            <button type="submit" name="add_to_bid" value="add_to_bid">Add to Bid Assembly</button>
+                        </form>
+                    </div>
+                    <div class="col-4">
+                        <form method="post">
+                            <button type="submit" name="go_to_bid" value="go_to_bid">Go to Bid Assembly</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
