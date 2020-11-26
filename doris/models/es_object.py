@@ -62,6 +62,18 @@ class ElasticsearchObject(object):
         response = requests.request("DELETE", url, headers=headers)
         return response
 
+    def search(self, query):
+        url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/_search"
+
+        payload = json.dumps(query)
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("GET", url, headers=headers, data=payload)
+        return response
+
+
 
 # The model needs to have functions that allow elasticsearch integration, which will include:
 # POSTing the data to elasticsearch both to add and update an entry. Will need to check version number.
