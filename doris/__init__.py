@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 
 
 def create_app(test_config=None):
@@ -29,7 +29,13 @@ def create_app(test_config=None):
 
     return app
 
+
 app = create_app()
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('application.index'))
 
 
 if __name__ == "__main__":
