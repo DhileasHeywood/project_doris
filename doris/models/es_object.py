@@ -1,10 +1,10 @@
 import requests
-from doris import app
 import json
 # The basic class of an elasticsearch object.
 # This will be the parent class for entries, sections and bids, as well as images
 
-# we need a URL first. Where is the ES database going to be stored????? But I digress.
+ELASTICSEARCH_URL = "http://localhost:9200/doris/"
+VERSION_URL = "http://localhost:9200/version/"
 
 class ElasticsearchObject(object):
     def __init__(self, **kwargs):
@@ -14,7 +14,7 @@ class ElasticsearchObject(object):
     data = None
 
     def create(self):
-        url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/"
+        url = ELASTICSEARCH_URL + self.es_type + "/"
 
         payload = json.dumps(self.data)
         headers = {
@@ -27,7 +27,7 @@ class ElasticsearchObject(object):
 
     @classmethod
     def retrieve(cls, _id):
-        url = app.config.get("ELASTICSEARCH_URL") + cls.es_type + "/" + _id
+        url = ELASTICSEARCH_URL + cls.es_type + "/" + _id
 
         headers = {
             'Content-Type': 'application/json'
@@ -38,7 +38,7 @@ class ElasticsearchObject(object):
         return cls(**response.json()["_source"])
 
     def update(self, new_body):
-        url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/" + self.data["id"]
+        url = ELASTICSEARCH_URL + self.es_type + "/" + self.data["id"]
         # version_url = app.config.get("VERSION_URL") + self.es_type + "/"
         # need to save a copy of the previous versions in a version index
 
@@ -54,7 +54,7 @@ class ElasticsearchObject(object):
 
 
     def delete(self, _id):
-        url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/" + _id
+        url = ELASTICSEARCH_URL + self.es_type + "/" + _id
         headers = {
             'Content-Type': 'application/json'
         }
@@ -66,7 +66,7 @@ class ElasticsearchObject(object):
     def search(cls, query=None):
         if query is None:
             query = {"query": {"match_all": {}}}
-        url = app.config.get("ELASTICSEARCH_URL") + cls.es_type + "/_search"
+        url = ELASTICSEARCH_URL + cls.es_type + "/_search"
 
         payload = json.dumps(query)
         headers = {

@@ -1,4 +1,6 @@
 import functools
+from doris.models.entry_model import Entry
+import json
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -36,7 +38,17 @@ def entry():
         if request.form["go_to_section"]:
             return redirect(url_for("application.section"))
 
-    return render_template("app/entry.html")
+    return render_template("app/entry.html", current_bid = "Groovy Bid Title")
+
+@bp.route("/entry_search", methods=["POST"])
+def entry_search():
+    # take the text from the search bar (and the checkboxes that I'll add.)
+    # use it to form a query
+    # Issue the query to the correct model (entry)
+    # return a list of results.
+    results = Entry.search()
+    return json.dumps([(h['_source']) for h in results.json()['hits']['hits']])
+
 
 
 @bp.route("/section", methods=["GET", "POST"])

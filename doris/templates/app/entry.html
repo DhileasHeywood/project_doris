@@ -5,11 +5,11 @@
         <div class="row mb-2">
             <div class="col-4">
                 <div class="mb-2">
-                    <form method="post">
-                        <label for="old_bid">Search Entries</label>
-                        <input name="old_bid" id="old_bid" >
-                        <input type="submit" value="Go">
-                    </form>
+{#                    <form method="post">#}
+                        <label for="search_entries">Search Entries</label>
+                        <input name="search_entries" id="search_entries">
+                        <input type="submit" value="Go" id="search_entries_btn">
+{#                    </form>#}
                 </div>
                 <div class="p-4">This is where I will put the checkboxes</div>
             </div>
@@ -24,7 +24,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="mb-2">
-                            <div class="border border-dark">"Current Bid Name"</div>
+                            <div class="border border-dark">{{ current_bid }}</div>
                         </div>
                     </div>
                     <div class="col-6 mb-2">
@@ -59,7 +59,7 @@
             <div class="col-5">
                 <div class="row m-2">Search Results</div>
                 <div class="row m-2" style="height: 700px;">
-                    <div class="col border border-dark h-100"></div>
+                    <div class="col border border-dark h-100" id="search_results"></div>
                 </div>
             </div>
             <div class="col-7">
@@ -79,4 +79,16 @@
         </div>
     </div>
 
+{% endblock %}
+{% block page_js %}
+<script type="application/javascript">
+$('#search_entries_btn').click(function(){
+     $.ajax({url: "/application/entry_search", data: "", type:"POST", success: function(result){
+      alert("Something is happening");
+      $('#search_results').html(result);
+      }, error: function (result){
+      alert("Nothing is happening");
+      } });
+});
+</script>
 {% endblock %}
