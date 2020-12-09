@@ -62,8 +62,11 @@ class ElasticsearchObject(object):
         response = requests.request("DELETE", url, headers=headers)
         return response
 
-    def search(self, query):
-        url = app.config.get("ELASTICSEARCH_URL") + self.es_type + "/_search"
+    @classmethod
+    def search(cls, query=None):
+        if query is None:
+            query = {"query": {"match_all": {}}}
+        url = app.config.get("ELASTICSEARCH_URL") + cls.es_type + "/_search"
 
         payload = json.dumps(query)
         headers = {

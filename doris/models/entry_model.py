@@ -14,11 +14,10 @@ class Entry(ElasticsearchObject):
         self.data["tags"] = kwargs["tags"]
         self.data["project_tags"] = kwargs["project_tags"]
         self.data["body"] = kwargs["body"]
-        self.data["entries"] = kwargs["sections"]
         self.data["user"] = kwargs["user"]
         self.data["date"] = kwargs["date"]
         self.data["version"] = kwargs["version"]
-        if kwargs["id"]:
+        if kwargs.get("id"):
             self.data["id"] = kwargs["id"]
 
     @property
