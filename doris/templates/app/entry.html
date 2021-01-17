@@ -11,7 +11,20 @@
                         <input type="submit" value="Go" id="search_entries_btn">
 {#                    </form>#}
                 </div>
-                <div class="p-4">This is where I will put the checkboxes</div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="search_body_check" value="search_body_check">
+                    <label class="form-check-label" for="search_body_check">Body</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="search_tags_check" value="search_tags_check">
+                    <label class="form-check-label" for="search_tags_check">Tags</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="search_proj_tags_check"
+                           value="search_proj_tags_check">
+                    <label class="form-check-label" for="search_proj_tags_check">Project Tags</label>
+                </div>
+
             </div>
             <div class="col-1">
                 <div class="mb-2">
@@ -59,7 +72,9 @@
             <div class="col-5">
                 <div class="row m-2">Search Results</div>
                 <div class="row m-2" style="height: 700px;">
-                    <div class="col border border-dark h-100" id="search_results"></div>
+                    <div class="col border border-dark h-100 overflow-auto" id="search_results">
+
+                    </div>
                 </div>
             </div>
             <div class="col-7">
@@ -83,12 +98,62 @@
 {% block page_js %}
 <script type="application/javascript">
 $('#search_entries_btn').click(function(){
-     $.ajax({url: "/application/entry_search", data: "", type:"POST", success: function(result){
-      alert("Something is happening");
-      $('#search_results').html(result);
-      }, error: function (result){
+
+
+     // define query object - a dictionary
+let query_object = { "query": {   }}
+// if tags and/or project tags checked: query object = { query: { term: { tags: "text", project_tags:
+// "text" }}}
+let tagsCheckbox = $('#search_tags_check');
+let projTagsCheckbox = $('#search_proj_tags_check');
+let bodyCheckbox = $('#search_body_check')
+let searchText = $('#search_entries').val();
+
+
+if (tagsCheckbox.prop("checked") && projTagsCheckbox.prop("checked")){
+    query_object = {"query":{"bool":{"should":[{ "term": {"tags": searchText}}, { "term": { "project_tags":
+                        searchText}}]}}};
+    console.log(JSON.stringify(query_object));
+} else if (tagsCheckbox.prop("checked")){
+    query_object = {"query":{"term":{"tags":searchText}}};
+    console.log(JSON.stringify(query_object));
+} else if (projTagsCheckbox.prop("checked")){
+    query_object = {"query":{"term":{"project_tags":searchText}}};
+    console.log(JSON.stringify(query_object));
+} if (bodyCheckbox.prop("checked")){
+    query_object = {"query":{"match":{"body":searchText }}};
+    console.log(JSON.stringify((query_object)));
+}
+// if body checked: query object =
+// $.ajax({url: "/application/entry_search", data: "query object", type: "POST", success: function(result){
+//      $('#search_results').html(result);
+//      }
+
+$.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), dataType: "json", contentType:
+        "application/json",
+    method:"POST", success:
+    function(result){
+    console.log(result);
+    for (let res of result)
+        //this only works when tags and project_tags are lists. They're not all currently in the test instance, but they
+        //must be in the final edition. That needs to be a feature of real Doris
+        searchResult = ('<div class="border border-dark m-2 pl-1">Tags: ' + res['tags'].join(", ") + '<br>Project ' +
+        'Tags: ' + res['project_tags'].join(", ") + '<br>Body: ' + res['body'] + '<br>Date: ' + res['date'])
+
+    $('#search_results').html(searchResult);
+
+
+
+
+      }, error: function (){
       alert("Nothing is happening");
       } });
 });
+
+
+
+
+
+
 </script>
 {% endblock %}

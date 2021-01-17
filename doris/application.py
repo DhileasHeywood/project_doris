@@ -46,7 +46,8 @@ def entry_search():
     # use it to form a query
     # Issue the query to the correct model (entry)
     # return a list of results.
-    results = Entry.search()
+    results = Entry.search(request.json)
+    print(results.json())
     return json.dumps([(h['_source']) for h in results.json()['hits']['hits']])
 
 

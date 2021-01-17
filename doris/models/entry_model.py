@@ -1,7 +1,7 @@
 from doris.models.es_object import ElasticsearchObject
 # Importing the parent class that the entry class will inherit its elasticsearch functionality from
 
-# **kwargs is probably useful here. Figure it out
+
 
 
 class Entry(ElasticsearchObject):
