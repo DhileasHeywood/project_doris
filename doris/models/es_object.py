@@ -37,12 +37,15 @@ class ElasticsearchObject(object):
 
         return cls(**response.json()["_source"])
 
-    def update(self, new_body):
+    def update(self, **kwargs):
         url = ELASTICSEARCH_URL + self.es_type + "/" + self.data["id"]
         # version_url = app.config.get("VERSION_URL") + self.es_type + "/"
         # need to save a copy of the previous versions in a version index
+        # Changed to kwargs because tags and project tags may need to be updated
 
-        self.data["body"] = new_body
+        self.data["tags"] = kwargs["new_tags"]
+        self.data["project_tags"] = kwargs["new_project_tags"]
+        self.data["body"] = kwargs["new_body"]
         payload = json.dumps(self.data)
         headers = {
             'Content-Type': 'application/json'

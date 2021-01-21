@@ -35,6 +35,9 @@ def entry():
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
     if request.method == "POST":
+        print(request.form)
+        if request.form["change_bid"]:
+            return redirect(url_for("application.index"))
         if request.form["go_to_section"]:
             return redirect(url_for("application.section"))
 
@@ -62,6 +65,8 @@ def section():
     if request.method == "POST":
         if request.form["go_to_bid"]:
             return redirect(url_for("application.bid"))
+        elif request.form["change_bid"]:
+            return redirect(url_for("application.index"))
 
     return render_template("app/section.html")
 
@@ -71,5 +76,7 @@ def bid():
     # The bid page needs to have the current bid title at the top
     # There needs to be a box for the sections, with move up and down buttons to control their order
     # There needs to be a text editor on the right with a save button that saves the bid.
+    #if request.method == "POST":
+    #    if request.form["change_bid"]:
 
     return render_template("app/bid.html")

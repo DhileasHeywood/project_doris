@@ -11,4 +11,3 @@ def create(**kwargs):
 
     return response
 
-Topical version of a classic: Q: How many programmers does it take to screw in a light bulb? A: None. It's a hardware problem.
