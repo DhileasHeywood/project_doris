@@ -35,11 +35,7 @@ def entry():
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
     if request.method == "POST":
-        print(request.form)
-        if request.form["change_bid"]:
-            return redirect(url_for("application.index"))
-        if request.form["go_to_section"]:
-            return redirect(url_for("application.section"))
+        pass
 
     return render_template("app/entry.html", current_bid = "Groovy Bid Title")
 

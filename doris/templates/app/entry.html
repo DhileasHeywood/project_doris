@@ -8,7 +8,7 @@
 {#                    <form method="post">#}
                         <label for="search_entries">Search Entries</label>
                         <input name="search_entries" id="search_entries">
-                        <input type="submit" value="Go" id="search_entries_btn">
+                        <input class="btn border border-dark" type="submit" value="Go" id="search_entries_btn">
 {#                    </form>#}
                 </div>
                 <div class="form-check form-check-inline">
@@ -29,7 +29,7 @@
             <div class="col-1">
                 <div class="mb-2">
                     <form method="post">
-                        <button type="button" value="Add New Entry" name="new_entry">Add New Entry</button>
+                        <button class="btn border border-dark" type="button" value="Add New Entry" name="new_entry">Add New Entry</button>
                     </form>
                 </div>
             </div>
@@ -42,26 +42,27 @@
                     </div>
                     <div class="col-6 mb-2">
                         <form method="post">
-                            <button type="submit" name="change_bid" value="change_bid">Change Bid</button>
+                            <div><a class="btn border border-dark" href="{{ url_for("application.index") }}">Change
+                            Bid</a></div>
                         </form>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-3 mr-auto">
                         <form method="post">
-                            <button type="submit" name="update_entry" value="update_entry">Update Entry</button>
+                            <button class="btn border border-dark" type="submit" name="update_entry" value="update_entry">Update Entry</button>
                         </form>
                     </div>
                     <div class="col-3">
                         <form method="post">
-                            <button type="submit" name="add_to_section" value="add_to_section">Add to Section
+                            <button class="btn border border-dark" type="submit" name="add_to_section"
+                                    value="add_to_section">Add to Section
                             Assembly</button>
                         </form>
                     </div>
                     <div class="col-3">
-                        <form method="post">
-                            <button type="submit" name="go_to_section" value="go_to_section">Go to Section Assembly</button>
-                        </form>
+                        <div><a class="btn border border-dark" href="{{ url_for("application.section") }}">Go
+                            to Section Assembly</a></div>
                     </div>
                 </div>
             </div>
@@ -96,63 +97,5 @@
 
 {% endblock %}
 {% block page_js %}
-<script type="application/javascript">
-$('#search_entries_btn').click(function(){
-
-
-     // define query object - a dictionary
-let query_object = { "query": {   }}
-// if tags and/or project tags checked: query object = { query: { term: { tags: "text", project_tags:
-// "text" }}}
-let tagsCheckbox = $('#search_tags_check');
-let projTagsCheckbox = $('#search_proj_tags_check');
-let bodyCheckbox = $('#search_body_check')
-let searchText = $('#search_entries').val();
-
-
-if (tagsCheckbox.prop("checked") && projTagsCheckbox.prop("checked")){
-    query_object = {"query":{"bool":{"should":[{ "term": {"tags": searchText}}, { "term": { "project_tags":
-                        searchText}}]}}};
-    console.log(JSON.stringify(query_object));
-} else if (tagsCheckbox.prop("checked")){
-    query_object = {"query":{"term":{"tags":searchText}}};
-    console.log(JSON.stringify(query_object));
-} else if (projTagsCheckbox.prop("checked")){
-    query_object = {"query":{"term":{"project_tags":searchText}}};
-    console.log(JSON.stringify(query_object));
-} else if (bodyCheckbox.prop("checked")) {
-    query_object = {"query": {"match": {"body": searchText}}};
-    console.log(JSON.stringify((query_object)));
-}
-// if body checked: query object =
-// $.ajax({url: "/application/entry_search", data: "query object", type: "POST", success: function(result){
-//      $('#search_results').html(result);
-//      }
-
-$.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), dataType: "json", contentType:
-        "application/json",
-    method:"POST", success:
-    function(result){
-    console.log(result);
-    let result_array = []
-    for (let res of result)
-        //this only works when tags and project_tags are lists. They're not all currently in the test instance, but they
-        //must be in the final edition. That needs to be a feature of real Doris
-        result_array.push('<div class="border border-dark m-2 pl-1">Tags: ' + res['tags'].join(", ") +
-            '<br>Project ' +
-        'Tags: ' + res['project_tags'].join(", ") + '<br>Body: ' + res['body'] + '<br>Date: ' + res['date']);
-
-
-    // Currently if there's an error, the previous results will display in the search_results window. I want to make
-        // it so that that will clear to make it more user friendly.
-    $('#search_results').html(result_array);
-
-
-
-
-      }, error: function (){
-      alert("Nothing is happening");
-      } });
-});
-</script>
+<script type="application/javascript" src="{{ url_for('static', filename='doris_entry.js') }}"></script>
 {% endblock %}
