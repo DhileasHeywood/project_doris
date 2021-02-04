@@ -7,6 +7,8 @@ class SectionObject(ElasticsearchObject):
 
     def __init__(self, **kwargs):
         super(SectionObject, self).__init__(**kwargs)
+        if self.data is None:
+            self.data = {}
         self.data["title"] = kwargs["title"]
         self.data["tags"] = kwargs["tags"]
         self.data["project_tags"] = kwargs["project_tags"]
