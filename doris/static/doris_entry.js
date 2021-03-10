@@ -57,14 +57,31 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
       } });
 });
 
-        function clickResult(x) {
-    // retrieve document from elasticsearch
-    console.log(x);
-    // put list of project tags in right div
-    // put list of tags in right div
-    // put body in right div
+function clickResult(x) {
+    let x_text = x.innerHTML;
+    let x_list = x_text.split('<br>')
+    let x_body = x_list[2].split(': ')[1]
+// retrieve document from elasticsearch
 
-    }
+    query_object = {"query": {"match": {"body": JSON.stringify(x_body)}}}
+
+    $.ajax({
+        url: "/application/entry_search", data: JSON.stringify(query_object), dataType: "json", contentType:
+            "application/json",
+        method: "POST", success:
+            function (result) {
+                let res = result[0]
+
+                $('#project_tags_clicked').html('<div class="doris-sr pt-2">' + res['project_tags'].join(", ") + '</div>');
+                $('#tags_clicked').html('<div class="doris-sr pt-2">' + res['tags'].join(", ") + '</div>');
+                $('#body_clicked').html('<div class="doris-sr pt-2">' + res['body'] + '</div>')
+            }
+    });
+// put list of project tags in right div
+// put list of tags in right div
+// put body in right div
+
+}
 
 
 function highlightResult(x) {
