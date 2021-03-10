@@ -37,11 +37,12 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
     console.log(result);
     let result_array = []
     for (let res of result)
-        //this only works when tags and project_tags are lists. They're not all currently in the test instance, but they
-        //must be in the final edition. That needs to be a feature of real Doris
-        result_array.push('<div class="border border-dark m-2 pl-1">Tags: ' + res['tags'].join(", ") +
-            '<br>Project ' +
-        'Tags: ' + res['project_tags'].join(", ") + '<br>Body: ' + res['body'] + '<br>Date: ' + res['date']);
+        //this only works when tags and project_tags are lists.
+        result_array.push('<div class="bg-white doris-sr border border-dark m-2 pl-1"' +
+            ' onmouseover="highlightResult(this)" onmouseout="unhighlightResult(this)"' +
+            ' onclick="clickResult(this)">Tags: ' + res['tags'].join(", ") +
+            '<br>Project ' + 'Tags: ' + res['project_tags'].join(", ") + '<br>Body: ' + res['body'] +
+            '<br>Date: ' + res['date'] + '</div>');
 
 
     // Currently if there's an error, the previous results will display in the search_results window. I want to make
@@ -55,4 +56,24 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
       alert("Nothing is happening");
       } });
 });
+
+        function clickResult(x) {
+    // retrieve document from elasticsearch
+    console.log(x);
+    // put list of project tags in right div
+    // put list of tags in right div
+    // put body in right div
+
+    }
+
+
+function highlightResult(x) {
+    // add a bg-light class to the div
+    x.setAttribute("class", "bg-light doris-sr border border-dark m-2 pl-1")
+}
+
+function unhighlightResult(x) {
+    // replace the bg-white to the div
+    x.setAttribute("class", "bg-white doris-sr border border-dark m-2 pl-1")
+}
 
