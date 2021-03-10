@@ -58,11 +58,11 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
 });
 
 function clickResult(x) {
-    let x_text = x.innerHTML;
-    let x_list = x_text.split('<br>')
-    let x_body = x_list[2].split(': ')[1]
-// retrieve document from elasticsearch
+    //retrieve body of clicked result
+    let x_text = x.innerHTML.split('<br>');
+    let x_body = x_text[2].split(': ')[1]
 
+    // retrieve document from elasticsearch
     query_object = {"query": {"match": {"body": JSON.stringify(x_body)}}}
 
     $.ajax({
@@ -70,16 +70,16 @@ function clickResult(x) {
             "application/json",
         method: "POST", success:
             function (result) {
+                // take first result (body search finds all sorts of things, and since the first will be an exact
+                // match every time, I'm comfortable just taking that)
                 let res = result[0]
 
+                // put the right parts of the result into the right boxes.
                 $('#project_tags_clicked').html('<div class="doris-sr pt-2">' + res['project_tags'].join(", ") + '</div>');
                 $('#tags_clicked').html('<div class="doris-sr pt-2">' + res['tags'].join(", ") + '</div>');
                 $('#body_clicked').html('<div class="doris-sr pt-2">' + res['body'] + '</div>')
             }
     });
-// put list of project tags in right div
-// put list of tags in right div
-// put body in right div
 
 }
 
