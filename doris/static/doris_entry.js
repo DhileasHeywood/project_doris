@@ -77,7 +77,7 @@ function clickResult(x) {
                 // put the right parts of the result into the right boxes.
                 $('#project_tags_clicked').html('<div class="doris-sr pt-2">' + res['project_tags'].join(", ") + '</div>');
                 $('#tags_clicked').html('<div class="doris-sr pt-2">' + res['tags'].join(", ") + '</div>');
-                $('#body_clicked').html('<div class="doris-sr pt-2">' + res['body'] + '</div>')
+                quill.setText(res['body']);
             }
     });
 
@@ -94,3 +94,6 @@ function unhighlightResult(x) {
     x.setAttribute("class", "bg-white doris-sr border border-dark m-2 pl-1")
 }
 
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
