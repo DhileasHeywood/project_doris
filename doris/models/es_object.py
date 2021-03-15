@@ -3,8 +3,11 @@ import json
 # The basic class of an elasticsearch object.
 # This will be the parent class for entries, sections and bids, as well as images
 
-ELASTICSEARCH_URL = "http://localhost:9200/doris/"
-VERSION_URL = "http://localhost:9200/version/"
+#ELASTICSEARCH_URL = "http://localhost:9200/doris-"
+#VERSION_URL = "http://localhost:9200/version/"
+
+ELASTICSEARCH_URL = "http://doris_es:9200/doris-"
+VERSION_URL = "http://doris_es:9200/version/"
 
 class ElasticsearchObject(object):
     def __init__(self, **kwargs):
@@ -14,7 +17,7 @@ class ElasticsearchObject(object):
     data = None
 
     def create(self):
-        url = ELASTICSEARCH_URL + self.es_type + "/"
+        url = ELASTICSEARCH_URL + self.es_type + "/_doc"
 
         payload = json.dumps(self.data)
         headers = {
@@ -27,7 +30,7 @@ class ElasticsearchObject(object):
 
     @classmethod
     def retrieve(cls, _id):
-        url = ELASTICSEARCH_URL + cls.es_type + "/" + _id
+        url = ELASTICSEARCH_URL + cls.es_type + "/_doc/" + _id
 
         headers = {
             'Content-Type': 'application/json'
@@ -57,7 +60,7 @@ class ElasticsearchObject(object):
 
 
     def delete(self, _id):
-        url = ELASTICSEARCH_URL + self.es_type + "/" + _id
+        url = ELASTICSEARCH_URL + self.es_type + "/_doc/" + _id
         headers = {
             'Content-Type': 'application/json'
         }

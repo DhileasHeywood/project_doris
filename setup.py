@@ -10,6 +10,6 @@ setup(
         'flask',
         'requests',
     ],
-    extras_require={"test": ["pytest", "coverage"]},
+    extras_require={"test": ["pytest", "coverage"], "deploy": "uwsgi"},
 )
 

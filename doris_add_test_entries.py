@@ -1,11 +1,14 @@
 import requests
 import json
+import time
+
 # The basic class of an elasticsearch object.
 # This will be the parent class for entries, sections and bids, as well as images
 
-ELASTICSEARCH_URL = "http://localhost:9200/doris-"
+#ELASTICSEARCH_URL = "http://localhost:9200/doris-"
+ELASTICSEARCH_URL = "http://doris_es:9200/doris-"
 
-
+# fixme: we could import the ElasticsearchObject and models below from doris rather than duplicating it here
 class ElasticsearchObject(object):
     def __init__(self, **kwargs):
         pass
@@ -154,13 +157,14 @@ entry_5 = EntryObject(tags=["test", "fake", "joke", "practice"], project_tags=["
                       body="Two bytes meet.  The first byte asks, 'Are you ill?' The second byte replies, 'No, just "
                            "feeling a bit off.'", user="Dhileas", date="2021-01-22", version=0)
 
-# entry_1.create()
-# entry_2.create()
-# entry_3.create()
-# entry_4.create()
-# entry_5.create()
+entry_1.create()
+entry_2.create()
+entry_3.create()
+entry_4.create()
+entry_5.create()
 
-
+# wait for the index so we can retrieve entry IDs # todo: the 201 response might return the IDs in the previous step
+time.sleep(5)
 
 section_1 = SectionObject(title="section_1", tags=["test", "joke", "practice"], project_tags=["doris", "geraldine"],
                            body=" A manager, a mechanical engineer, and software analyst are driving back from "
@@ -227,9 +231,11 @@ section_3 = SectionObject(title="section_3", tags=["test", "fake news"], project
                           user="Dhileas", date="2021-01-22", version=0)
 
 #
-# section_1.create()
-# section_2.create()
-# section_3.create()
+section_1.create()
+section_2.create()
+section_3.create()
+
+time.sleep(5)
 
 # purposely not writing the body in markdown, so that they can be updated later. I didn't want to deal with the
 # formatting just now, I just want something to test with
