@@ -34,8 +34,7 @@ def entry():
     # The entry page needs to have a search bar that can be used to find entries.
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
-    if request.method == "POST":
-        pass
+    print("entry page")
 
     return render_template("app/entry.html", current_bid = "Groovy Bid Title")
 
@@ -45,19 +44,27 @@ def entry_search():
     # use it to form a query
     # Issue the query to the correct model (entry)
     # return a list of results.
+
     results = Entry.search(request.json)
-    print(results.json())
-    return json.dumps([(h['_source']) for h in results.json()['hits']['hits']])
+
+    return json.dumps([[h['_source'], h['_id']] for h in results.json()['hits']['hits']])
+
+# @bp.route("/entry_update", methods=["POST"])
+# def entry_update():
+#     # take the information from the tags, project tags and body tags, and update the entry with those details.
+#     results = Entry.update(request.json)
+#
+#     return results
 
 
 
 @bp.route("/section", methods=["GET", "POST"])
 def section():
-    # The section page needs to have a section title and current bid line
-    # There needs to be a box that displays the entries added to the current section
-    # There need to be move up and move down buttons that will adjust the order of the sections in the box
-    # On the right, there needs to be an editable text box that contains the text of the entries in the right order.
-    # Underneath, there should be a save button and an add to bid button.
+    """ The section page needs to have a section title and current bid line
+    There needs to be a box that displays the entries added to the current section
+    There need to be move up and move down buttons that will adjust the order of the sections in the box
+    On the right, there needs to be an editable text box that contains the text of the entries in the right order.
+    Underneath, there should be a save button and an add to bid button."""
     if request.method == "POST":
         if request.form["go_to_bid"]:
             return redirect(url_for("application.bid"))
@@ -72,7 +79,7 @@ def bid():
     # The bid page needs to have the current bid title at the top
     # There needs to be a box for the sections, with move up and down buttons to control their order
     # There needs to be a text editor on the right with a save button that saves the bid.
-    #if request.method == "POST":
+    # if request.method == "POST":
     #    if request.form["change_bid"]:
 
     return render_template("app/bid.html")
