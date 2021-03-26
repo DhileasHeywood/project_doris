@@ -13,7 +13,6 @@ bp = Blueprint("application", __name__, url_prefix="/application")
 def index():
     # I'm going to put this in the else statement afterwards, for if the request.method == "GET"
 
-
     # The start page needs to have the ability to start a new bid, and to search existing bids
     if request.method == "POST":
         if request.form["new_bid"]:
@@ -37,7 +36,8 @@ def entry():
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
     print("entry page")
 
-    return render_template("app/entry.html", current_bid = "Groovy Bid Title")
+    return render_template("app/entry.html", current_bid="Groovy Bid Title")
+
 
 @bp.route("/entry_search", methods=["POST"])
 def entry_search():
@@ -50,36 +50,22 @@ def entry_search():
 
     return json.dumps([[h['_source'], h['_id']] for h in results.json()['hits']['hits']])
 
+
 @bp.route("/entry_update", methods=["POST"])
 def entry_update():
-    # take the information from the tags, project tags and body tags, and update the entry with those details.
-
     update_data = request.json
 
-    new_tags = update_data["tags_new"]
-    new_project_tags = update_data["project_tags_new"]
-    new_body = update_data["body_new"]
     update_id = update_data["entry_id"]
 
+    # retrieve ES document with matching ID and make it an Entry object
     retrieved_doc = Entry.retrieve(update_id)
 
-    doc_id = retrieved_doc.json()["_id"]
-    tags = retrieved_doc.json()["_source"]["tags"]
-    project_tags = retrieved_doc.json()["_source"]["project_tags"]
-    body = retrieved_doc.json()["_source"]["body"]
-    user = retrieved_doc.json()["_source"]["user"]
-    update_date = str(date.today())
-    version = retrieved_doc.json()["_source"]["version"] + 1
+    # update the Entry object with the data from the front end
+    # The **update_data unpacks the keyword arguments into the right places automatically.
+    update = retrieved_doc.update(**update_data)
 
-    update_doc = Entry(tags=tags, project_tags=project_tags, body=body, user=user, date=update_date,
-                                   version=version, id=doc_id)
-
-    update = update_doc.update(new_project_tags=new_project_tags, new_tags=new_tags, new_body=new_body)
-
-    print(update)
-
+    # sends the status code to front end to tell it if the update was successful
     return json.dumps(update.status_code)
-
 
 
 @bp.route("/section", methods=["GET", "POST"])

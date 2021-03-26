@@ -161,14 +161,16 @@ $('#update_entry_btn').click(function(){
     let new_body = quill.getText();
 
 
+    // assemble the JSON to send to back end
+     let update_object = {"new_project_tags": new_proj_tags, "new_tags": new_tags, "new_body": new_body, "entry_id": clicked_id};
 
-     let update_object = {"project_tags_new": new_proj_tags, "tags_new": new_tags, "body_new": new_body, "entry_id": clicked_id};
-
-         $.ajax({
+     // send update info to backend
+     $.ajax({
         url: "/application/entry_update", data: JSON.stringify(update_object), dataType: "json", contentType:
             "application/json", method: "POST", success:
                 function (result){
                     if (result == 200) {
+                        // This will change to a modal for notification.
                         message = "Entry has been updated successfully!"
                     } else {
                         message = "Something went wrong. Maybe try something else?"
@@ -181,14 +183,5 @@ $('#update_entry_btn').click(function(){
       }
 
     });
-
-
-    // ajax query to send to application.py
-    // send the data as **kwargs for update method?
-    // will tags and proj tags be lists?
-    // send json over ajax. What do I need it to look like?
-    // id=clicked_id, new_project_tags=proj_tags_new, new_tags=tags_new, new_body=body_new
-
-
 
 });

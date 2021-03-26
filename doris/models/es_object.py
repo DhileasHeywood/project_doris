@@ -38,7 +38,7 @@ class ElasticsearchObject(object):
 
         if response.status_code == 200:
 
-            return response
+            return cls(**response.json()["_source"])
 
         return None
 
@@ -51,6 +51,7 @@ class ElasticsearchObject(object):
         self.data["tags"] = kwargs["new_tags"]
         self.data["project_tags"] = kwargs["new_project_tags"]
         self.data["body"] = kwargs["new_body"]
+        self.data["version"] = self.data["version"] + 1
         payload = json.dumps(self.data)
         headers = {
             'Content-Type': 'application/json'
