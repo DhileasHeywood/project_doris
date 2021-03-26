@@ -1,6 +1,7 @@
 import functools
 from doris.models.entry_model import Entry
 import json
+from datetime import date
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -49,12 +50,35 @@ def entry_search():
 
     return json.dumps([[h['_source'], h['_id']] for h in results.json()['hits']['hits']])
 
-# @bp.route("/entry_update", methods=["POST"])
-# def entry_update():
-#     # take the information from the tags, project tags and body tags, and update the entry with those details.
-#     results = Entry.update(request.json)
-#
-#     return results
+@bp.route("/entry_update", methods=["POST"])
+def entry_update():
+    # take the information from the tags, project tags and body tags, and update the entry with those details.
+
+    update_data = request.json
+
+    new_tags = update_data["tags_new"]
+    new_project_tags = update_data["project_tags_new"]
+    new_body = update_data["body_new"]
+    update_id = update_data["entry_id"]
+
+    retrieved_doc = Entry.retrieve(update_id)
+
+    doc_id = retrieved_doc.json()["_id"]
+    tags = retrieved_doc.json()["_source"]["tags"]
+    project_tags = retrieved_doc.json()["_source"]["project_tags"]
+    body = retrieved_doc.json()["_source"]["body"]
+    user = retrieved_doc.json()["_source"]["user"]
+    update_date = str(date.today())
+    version = retrieved_doc.json()["_source"]["version"] + 1
+
+    update_doc = Entry(tags=tags, project_tags=project_tags, body=body, user=user, date=update_date,
+                                   version=version, id=doc_id)
+
+    update = update_doc.update(new_project_tags=new_project_tags, new_tags=new_tags, new_body=new_body)
+
+    print(update)
+
+    return json.dumps(update.status_code)
 
 
 

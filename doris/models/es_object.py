@@ -1,10 +1,12 @@
 import requests
 import json
+from datetime import date
 # The basic class of an elasticsearch object.
 # This will be the parent class for entries, sections and bids, as well as images
 
-ELASTICSEARCH_URL = "http://localhost:9200/doris/"
+ELASTICSEARCH_URL = "http://localhost:9200/doris-"
 VERSION_URL = "http://localhost:9200/version/"
+
 
 class ElasticsearchObject(object):
     def __init__(self, **kwargs):
@@ -27,18 +29,21 @@ class ElasticsearchObject(object):
 
     @classmethod
     def retrieve(cls, _id):
-        url = ELASTICSEARCH_URL + cls.es_type + "/" + _id
-
+        url = ELASTICSEARCH_URL + cls.es_type + "/_doc/" + _id
         headers = {
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers)
+        response = requests.request("GET", url, headers=headers)
 
-        return cls(**response.json()["_source"])
+        if response.status_code == 200:
+
+            return response
+
+        return None
 
     def update(self, **kwargs):
-        url = ELASTICSEARCH_URL + self.es_type + "/" + self.data["id"]
+        url = ELASTICSEARCH_URL + self.es_type + "/_doc/" + self.data["id"]
         # version_url = app.config.get("VERSION_URL") + self.es_type + "/"
         # need to save a copy of the previous versions in a version index
         # Changed to kwargs because tags and project tags may need to be updated
@@ -53,8 +58,6 @@ class ElasticsearchObject(object):
         response = requests.request("POST", url, headers=headers, data=payload)
 
         return response
-
-
 
     def delete(self, _id):
         url = ELASTICSEARCH_URL + self.es_type + "/" + _id
@@ -78,8 +81,6 @@ class ElasticsearchObject(object):
 
         response = requests.request("GET", url, headers=headers, data=payload)
         return response
-
-
 
 # The model needs to have functions that allow elasticsearch integration, which will include:
 # POSTing the data to elasticsearch both to add and update an entry. Will need to check version number.

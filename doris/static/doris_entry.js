@@ -95,18 +95,30 @@ function getClickResult(x) {
 
                 // put the right parts of the result into the right boxes.
                 // Put tags and proj tags as options into select boxes
+
+                // assign an empty list to put tags into
                 let tag_array = []
 
+                // put each tag into its own option tag
                 for (let tag of clicked_tags)
                     tag_array.push('<option selected="selected">' + tag + '</option>');
 
+                // add the selected options into select tag
                 $("#tags_clicked").html(tag_array);
 
 
-                $('#project_tags_clicked').html('<div class="doris-sr pt-2" id="project_tags_content">' + clicked_proj_tags.join(", ") + '</div>');
-                // $('#tags_clicked').html('<div class="doris-sr pt-2" id="tags_content">' + clicked_tags.join(", ") + '</div>');
+                // repeat the above for project tags
+                let proj_tag_array = []
+
+                for (let tag of clicked_proj_tags)
+                    proj_tag_array.push('<option selected="selected">' + tag + '</option>');
+
+                $("#project_tags_clicked").html(proj_tag_array);
+
+                // set the quill text box text to that of the entry body.
                 quill.setText(clicked_body);
 
+                // store the id of the clicked result for later use.
                 clicked_id = res[1]
 
             }
@@ -134,7 +146,6 @@ $('#update_entry_btn').click(function(){
     // retrieve tags from select box
     // put them into a list to send via JSON
     let new_tags_data = $("#tags_clicked").select2('data');
-    console.log(new_tags_data)
     let new_tags = [];
     for (let i of new_tags_data)
         new_tags.push(i['text']);
@@ -142,15 +153,35 @@ $('#update_entry_btn').click(function(){
     // retrieve project tags from select box.
     // put them into a list to send via JSON
     let new_proj_tags_data = $("#project_tags_clicked").select2('data');
-    let new_project_tags = [];
+
+    let new_proj_tags = [];
     for(let i of new_proj_tags_data)
-        new_project_tags.push(i['text']);
+        new_proj_tags.push(i['text']);
 
     let new_body = quill.getText();
-    console.log(new_tags);
 
 
-    // let update_object = {"project_tags_new": proj_tags, "tags_new": tags, "body_new": body }
+
+     let update_object = {"project_tags_new": new_proj_tags, "tags_new": new_tags, "body_new": new_body, "entry_id": clicked_id};
+
+         $.ajax({
+        url: "/application/entry_update", data: JSON.stringify(update_object), dataType: "json", contentType:
+            "application/json", method: "POST", success:
+                function (result){
+                    if (result == 200) {
+                        message = "Entry has been updated successfully!"
+                    } else {
+                        message = "Something went wrong. Maybe try something else?"
+                    }
+                    alert(message)
+
+
+                }, error: function (){
+                console.log("Nothing is happening");
+      }
+
+    });
+
 
     // ajax query to send to application.py
     // send the data as **kwargs for update method?
