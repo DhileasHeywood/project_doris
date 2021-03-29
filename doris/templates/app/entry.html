@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <div id="search_container" class="container">
         <div class="row mb-2">
             <div class="col-4">
@@ -54,6 +55,7 @@
                                     value="update_entry">Update Entry</button>
 
                     </div>
+
                     <div class="col-3">
                         <form method="post">
                             <button class="btn border border-dark" type="submit" name="add_to_section"
@@ -68,6 +70,17 @@
                 </div>
             </div>
         </div>
+        <div id="update-toast" style="position: absolute; top: 0; right: 0; min-width: 300px;">
+            <div class="toast fade">
+                <div class="toast-header">
+                    <strong class="mr-auto text-success"><i class="fa fa-check"></i> Success! </strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    Entry has successfully been updated!
+                </div>
+            </div>
+        </div>
     </div>
     <div id="body_container" class="container">
         <div class="row mb-2">
@@ -75,7 +88,6 @@
                 <div class="row m-2">Search Results</div>
                 <div class="row m-2" style="height: 700px;">
                     <div class="col border border-dark h-100 overflow-auto" id="search_results">
-
                     </div>
                 </div>
             </div>
@@ -99,6 +111,7 @@
             </div>
         </div>
     </div>
+
 
 {% endblock %}
 {% block page_js %}

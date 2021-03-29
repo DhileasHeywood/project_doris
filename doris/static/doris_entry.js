@@ -162,22 +162,21 @@ $('#update_entry_btn').click(function(){
 
 
     // assemble the JSON to send to back end
-     let update_object = {"new_project_tags": new_proj_tags, "new_tags": new_tags, "new_body": new_body, "entry_id": clicked_id};
+    let update_object = {"new_project_tags": new_proj_tags, "new_tags": new_tags, "new_body": new_body, "entry_id": clicked_id};
 
      // send update info to backend
      $.ajax({
         url: "/application/entry_update", data: JSON.stringify(update_object), dataType: "json", contentType:
             "application/json", method: "POST", success:
                 function (result){
-                    if (result == 200) {
+                    if (result === 200) {
                         // This will change to a modal for notification.
-                        message = "Entry has been updated successfully!"
+                        $(".toast").toast({ delay: 3000});
+                        $(".toast").toast("show");
+
                     } else {
-                        message = "Something went wrong. Maybe try something else?"
+                        alert("Something went wrong. Maybe try something else?");
                     }
-                    alert(message)
-
-
                 }, error: function (){
                 console.log("Nothing is happening");
       }
