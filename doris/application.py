@@ -1,5 +1,6 @@
 import functools
 from doris.models.entry_model import Entry
+from doris.models.bid_model import Bid
 import json
 from datetime import date
 
@@ -9,13 +10,22 @@ from flask import (
 bp = Blueprint("application", __name__, url_prefix="/application")
 
 
+
 @bp.route("/", methods=["GET", "POST"])
 def index():
-    # I'm going to put this in the else statement afterwards, for if the request.method == "GET"
+    #Retrieving the bid titles to use in search box.
+    bid_search = []
+    results = Bid.search().json()
+    [bid_search.append(h["_source"]["title"]) for h in results["hits"]["hits"]]
+
+    print(bid_search)
 
     # The start page needs to have the ability to start a new bid, and to search existing bids
     if request.method == "POST":
-        if request.form["new_bid"]:
+        if request.form["new_bid_title"]:
+
+            session["bid_title"] = request.form["new_bid_title"]
+
             return redirect(url_for("application.entry"))
 
         # elif button == "search":
@@ -34,9 +44,8 @@ def entry():
     # The entry page needs to have a search bar that can be used to find entries.
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
-    print("entry page")
 
-    return render_template("app/entry.html", current_bid="Groovy Bid Title")
+    return render_template("app/entry.html", current_bid=session["bid_title"])
 
 
 @bp.route("/entry_search", methods=["POST"])

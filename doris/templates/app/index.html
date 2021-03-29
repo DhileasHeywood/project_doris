@@ -9,18 +9,56 @@
 {% endblock %}
 
 {% block content %}
-    <div id="main-container" class="text-center row mt-5">
-        <div class="d-inline-block col">
-            <form method="post">
-                <button type="submit" name="new_bid" value="new_bid">New Bid</button>
-            </form>
-        </div>
-        <div class="d-inline-block col">
-             <form method="post">
-                <label for="old_bid">Search Bid</label>
-                <input name="old_bid" id="old_bid" >
-                <input type="submit" value="Go">
-            </form>
+    <div id="main-container" class="container">
+        <div class="row mt-2">
+            <div class="col">
+                <button type="button" class="btn btn-outline-dark" data-toggle="modal"
+                        data-target="#new_bid_modal">New Bid</button>
+
+                <div class="modal fade" id="new_bid_modal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title">What would you like to call your new bid?</h6>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" id="start_new_bid">
+                                    <label for="new_bid_title"></label>
+                                    <input name="new_bid_title" id="new_bid_title">
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" form="start_new_bid" class="btn btn-outline-dark">Start New
+                                    Bid</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col-4 mt-2">
+                        Search Existing Bids
+                    </div>
+                    <div class="col-6">
+                        <form method="post" id="search_bid">
+                            <select class="form-control col border border-dark" multiple="multiple" id="bid_search" style="height:
+                            40px;">
+                            </select>
+                        </form>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-outline-dark" form="bid_search">Go</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+{% endblock %}
+{% block page_js %}
+<script type="application/javascript" src="{{ url_for('static', filename='doris_index.js') }}"></script>
 {% endblock %}

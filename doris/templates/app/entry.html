@@ -6,20 +6,22 @@
         <div class="row mb-2">
             <div class="col-4">
                 <div class="mb-2">
-{#                    <form method="post">#}
                         <label for="search_entries">Search Entries</label>
                         <input name="search_entries" id="search_entries">
                         <input class="btn border border-dark" type="submit" value="Go" id="search_entries_btn">
-{#                    </form>#}
                 </div>
+
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="search_body_check" value="search_body_check">
                     <label class="form-check-label" for="search_body_check">Body</label>
                 </div>
+
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="search_tags_check" value="search_tags_check" checked="true">
+                    <input class="form-check-input" type="checkbox" id="search_tags_check" value="search_tags_check"
+                           checked="checked">
                     <label class="form-check-label" for="search_tags_check">Tags</label>
                 </div>
+
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="search_proj_tags_check"
                            value="search_proj_tags_check">
@@ -38,7 +40,9 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="mb-2">
-                            <div class="border border-dark">{{ current_bid }}</div>
+                            <div class="border border-dark">
+                                <div class="pl-1">{{ current_bid }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6 mb-2">
