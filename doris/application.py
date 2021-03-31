@@ -18,7 +18,7 @@ def index():
     results = Bid.search().json()
     [bid_search.append(h["_source"]["title"]) for h in results["hits"]["hits"]]
 
-    print(bid_search)
+    session["extant_bids"] = bid_search
 
     # The start page needs to have the ability to start a new bid, and to search existing bids
     if request.method == "POST":
@@ -28,19 +28,24 @@ def index():
 
             return redirect(url_for("application.entry"))
 
+        # if request.form["extant_bid_title"]:
+        #
+        #     return redirect(url_for("application.entry"))
+
         # elif button == "search":
             # search bids using some magical wizardry.
             # click on the bid title and make the bid object
             # session.bid = bid_title
             # return redirect(url_for("app.entry"))
     if "username" in session:
-        return render_template("app/index.html")
+        return render_template("app/index.html"), json.dumps(bid_search)
 
     return redirect(url_for("auth.login"))
 
 
 @bp.route("/entry", methods=["GET", "POST"])
 def entry():
+    print(session["bid_title"])
     # The entry page needs to have a search bar that can be used to find entries.
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.

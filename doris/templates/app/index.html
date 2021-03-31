@@ -45,14 +45,18 @@
                         Search Existing Bids
                     </div>
                     <div class="col-6">
-                        <form method="post" id="search_bid">
+                        <form method="post" id="extant_bid_title">
                             <select class="form-control col border border-dark" multiple="multiple" id="bid_search" style="height:
                             40px;">
+                                {% for title in session.extant_bids %}
+                                    <option>{{ title }}</option>
+                                {% endfor %}
                             </select>
                         </form>
                     </div>
                     <div class="col-2">
-                        <button type="submit" class="btn btn-outline-dark" form="bid_search">Go</button>
+                        <div><a class="btn btn-outline-dark" href="{{ url_for("application.entry") }}"
+                                id="search_bid">Go</a></div>
                     </div>
                 </div>
             </div>
