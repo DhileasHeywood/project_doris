@@ -14,23 +14,36 @@ bp = Blueprint("application", __name__, url_prefix="/application")
 @bp.route("/", methods=["GET", "POST"])
 def index():
     #Retrieving the bid titles to use in search box.
-    bid_search = []
     results = Bid.search().json()
-    [bid_search.append(h["_source"]["title"]) for h in results["hits"]["hits"]]
-
+    bid_search = [
+        {"id": h["_id"], "title" : h["_source"]["title"]}
+        for h in results["hits"]["hits"]
+    ]
+    bids = {
+        h["_id"]: h["_source"]["title"]
+        for h in results["hits"]["hits"]
+    }
     session["extant_bids"] = bid_search
 
     # The start page needs to have the ability to start a new bid, and to search existing bids
     if request.method == "POST":
-        if request.form["new_bid_title"]:
+
+
+        if request.form.get("bid_search", None):
+
+            session["bid_title"] = bids[request.form["bid_search"]]
+            bid_id = request.form["bid_search"]
+
+            return redirect(url_for("application.entry", bid_id=bid_id))
+
+
+        if request.form.get("new_bid_title", None):
 
             session["bid_title"] = request.form["new_bid_title"]
 
-            return redirect(url_for("application.entry"))
+            return redirect(url_for("application.entry", bid_id="no id yet"))
 
-        # if request.form["extant_bid_title"]:
-        #
-        #     return redirect(url_for("application.entry"))
+
 
         # elif button == "search":
             # search bids using some magical wizardry.
@@ -38,14 +51,13 @@ def index():
             # session.bid = bid_title
             # return redirect(url_for("app.entry"))
     if "username" in session:
-        return render_template("app/index.html"), json.dumps(bid_search)
+        return render_template("app/index.html")
 
     return redirect(url_for("auth.login"))
 
 
-@bp.route("/entry", methods=["GET", "POST"])
-def entry():
-    print(session["bid_title"])
+@bp.route("/entry/<bid_id>", methods=["GET", "POST"])
+def entry(bid_id=None):
     # The entry page needs to have a search bar that can be used to find entries.
     # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
     # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
