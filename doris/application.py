@@ -3,12 +3,12 @@ from doris.models.entry_model import Entry
 from doris.models.bid_model import Bid
 import json
 from datetime import date
+from uuid import uuid4
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 bp = Blueprint("application", __name__, url_prefix="/application")
-
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -31,38 +31,48 @@ def index():
 
         if request.form.get("bid_search", None):
 
-            session["bid_title"] = bids[request.form["bid_search"]]
+            current_bid = bids[request.form["bid_search"]]
             bid_id = request.form["bid_search"]
 
-            return redirect(url_for("application.entry", bid_id=bid_id))
+            return redirect(url_for("application.entry", bid_id=bid_id, current_bid=current_bid))
 
 
         if request.form.get("new_bid_title", None):
 
-            session["bid_title"] = request.form["new_bid_title"]
+            extant_bids = []
+            for bid in bid_search:
+                extant_bids.append(bid["title"])
 
-            return redirect(url_for("application.entry", bid_id="no id yet"))
+            if request.form["new_bid_title"] not in extant_bids:
+
+                current_bid = request.form["new_bid_title"]
+                new_id = str(uuid4());
+                new_bid = Bid(title=current_bid, user=session["username"], date=str(date.today()), version=0, body="None",
+                              sections=["None"], new_id=new_id)
+
+
+                new_bid.create()
+
+                return redirect(url_for("application.entry", current_bid=current_bid, bid_id=new_id))
+
+            else:
+                print("this bid already exists!")
+
+            # provide some sort of verification. You shouldn't be able to create duplicates of bids.
+            # retrieve the id of the new bid and assign it to bid_id.
 
 
 
-        # elif button == "search":
-            # search bids using some magical wizardry.
-            # click on the bid title and make the bid object
-            # session.bid = bid_title
-            # return redirect(url_for("app.entry"))
     if "username" in session:
         return render_template("app/index.html")
 
     return redirect(url_for("auth.login"))
 
 
-@bp.route("/entry/<bid_id>", methods=["GET", "POST"])
-def entry(bid_id=None):
-    # The entry page needs to have a search bar that can be used to find entries.
-    # There need to be 4 boxes on the page. One for results, one for tags, one for project tags, and one for the body
-    # There need to be buttons to update, add to a section, go to the section assembly, and add a new entry.
-
-    return render_template("app/entry.html", current_bid=session["bid_title"])
+@bp.route("/entry/<current_bid>/<bid_id>", methods=["GET", "POST"])
+def entry(bid_id=None, current_bid=None):
+    # basic view function for entry page. Passes in params for current bid and bid id so that page can be accessed.
+    return render_template("app/entry.html", current_bid=current_bid, bid_id=bid_id)
 
 
 @bp.route("/entry_search", methods=["POST"])
@@ -94,8 +104,8 @@ def entry_update():
     return json.dumps(update.status_code)
 
 
-@bp.route("/section", methods=["GET", "POST"])
-def section():
+@bp.route("/section/<current_bid>/<bid_id>", methods=["GET", "POST"])
+def section(bid_id=None, current_bid=None):
     """ The section page needs to have a section title and current bid line
     There needs to be a box that displays the entries added to the current section
     There need to be move up and move down buttons that will adjust the order of the sections in the box
@@ -103,19 +113,19 @@ def section():
     Underneath, there should be a save button and an add to bid button."""
     if request.method == "POST":
         if request.form["go_to_bid"]:
-            return redirect(url_for("application.bid"))
+            return redirect(url_for("application.bid", current_bid=current_bid, bid_id=bid_id))
         elif request.form["change_bid"]:
-            return redirect(url_for("application.index"))
+            return redirect(url_for("application.index", current_bid=current_bid, bid_id=bid_id))
 
-    return render_template("app/section.html")
+    return render_template("app/section.html", current_bid=current_bid, bid_id=bid_id)
 
 
-@bp.route("/bid", methods=["GET", "POST"])
-def bid():
+@bp.route("/bid/<current_bid>/<bid_id>", methods=["GET", "POST"])
+def bid(bid_id=None, current_bid=None):
     # The bid page needs to have the current bid title at the top
     # There needs to be a box for the sections, with move up and down buttons to control their order
     # There needs to be a text editor on the right with a save button that saves the bid.
     # if request.method == "POST":
     #    if request.form["change_bid"]:
 
-    return render_template("app/bid.html")
+    return render_template("app/bid.html", current_bid=current_bid, bid_id=bid_id)

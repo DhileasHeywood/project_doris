@@ -16,7 +16,7 @@ class ElasticsearchObject(object):
     data = None
 
     def create(self):
-        url = ELASTICSEARCH_URL + self.es_type + "/"
+        url = ELASTICSEARCH_URL + self.es_type + "/_create/" + str(self._id)
 
         payload = json.dumps(self.data)
         headers = {
