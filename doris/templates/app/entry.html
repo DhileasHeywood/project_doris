@@ -1,24 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     <div id="search_container" class="container">
         <div class="row mb-2">
             <div class="col-4">
                 <div class="mb-2">
-{#                    <form method="post">#}
                         <label for="search_entries">Search Entries</label>
                         <input name="search_entries" id="search_entries">
-                        <input class="btn border border-dark" type="submit" value="Go" id="search_entries_btn">
-{#                    </form>#}
+                        <input class="btn border border-dark" type="submit" value="Search" id="search_entries_btn">
                 </div>
+
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="search_body_check" value="search_body_check">
                     <label class="form-check-label" for="search_body_check">Body</label>
                 </div>
+
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="search_tags_check" value="search_tags_check" checked>
+
+                    <input class="form-check-input" type="checkbox" id="search_tags_check" value="search_tags_check"
+                           checked="checked">
+
                     <label class="form-check-label" for="search_tags_check">Tags</label>
                 </div>
+
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="search_proj_tags_check"
                            value="search_proj_tags_check">
@@ -37,7 +42,9 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="mb-2">
-                            <div class="border border-dark">{{ current_bid }}</div>
+                            <div class="border border-dark">
+                                <div class="pl-1">{{ current_bid }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-6 mb-2">
@@ -49,10 +56,12 @@
                 </div>
                 <div class="row">
                     <div class="col-3 mr-auto">
-                        <form method="post">
-                            <button class="btn border border-dark" type="submit" name="update_entry" value="update_entry">Update Entry</button>
-                        </form>
+
+                            <button class="btn border border-dark" type="submit" id="update_entry_btn"
+                                    value="update_entry">Update Entry</button>
+
                     </div>
+
                     <div class="col-3">
                         <form method="post">
                             <button class="btn border border-dark" type="submit" name="add_to_section"
@@ -61,9 +70,20 @@
                         </form>
                     </div>
                     <div class="col-3">
-                        <div><a class="btn border border-dark" href="{{ url_for("application.section") }}">Go
-                            to Section Assembly</a></div>
+                        <div><a class="btn border border-dark" href="{{ url_for("application.section",
+        bid_id=bid_id, current_bid=current_bid) }}">Go to Section Assembly</a></div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="update-toast" style="position: absolute; top: 0; right: 0; min-width: 300px;">
+            <div class="toast fade">
+                <div class="toast-header">
+                    <strong class="mr-auto text-success"><i class="fa fa-check"></i> Success! </strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    Entry has successfully been updated!
                 </div>
             </div>
         </div>
@@ -74,21 +94,22 @@
                 <div class="row m-2">Search Results</div>
                 <div class="row m-2" style="height: 700px;">
                     <div class="col border border-dark h-100 overflow-auto" id="search_results">
-
                     </div>
                 </div>
             </div>
             <div class="col-7">
                 <div class="row ml-2 my-2">Project Tags:</div>
                 <div class="row ml-2 my-2" style="height: 40px;">
-                    <div class="col border border-dark h-100" id="project_tags_clicked"></div>
+                    <select class="form-control col border border-dark h-100"
+                            multiple="multiple" id="project_tags_clicked"></select>
                 </div>
                 <div class="row ml-2 my-2">Tags:</div>
                 <div class="row ml-2 my-2" style="height: 40px;">
-                    <div class="col border border-dark h-100" id="tags_clicked"></div>
+                    <select class="form-control col border border-dark h-100"
+                            multiple="multiple" id="tags_clicked"></select>
                 </div>
                 <div class="row ml-2 my-2">Body:</div>
-                <div class="row ml-2 my-2" style="height: 540px;">
+                <div class="row ml-2 my-2" style="height: 500px;">
                     <div class="col border border-light h-100 p-0" id="body_clicked">
                         <div class="p-0" id="editor"></div>
                     </div>
@@ -96,6 +117,7 @@
             </div>
         </div>
     </div>
+
 
 {% endblock %}
 {% block page_js %}

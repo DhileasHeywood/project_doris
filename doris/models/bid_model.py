@@ -16,6 +16,7 @@ class Bid(ElasticsearchObject):
         self.data["user"] = kwargs["user"]
         self.data["date"] = kwargs["date"]
         self.data["version"] = kwargs["version"]
+        self._id = kwargs["new_id"]
 
     @property
     def title(self):
