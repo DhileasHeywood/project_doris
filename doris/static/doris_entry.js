@@ -90,7 +90,11 @@ function getClickResult(x) {
 
                 clicked_proj_tags = res[0]['project_tags']
                 clicked_tags = res[0]['tags']
-                clicked_body = res[0]['body']
+
+                let converter = new showdown.Converter();
+
+                clicked_body = converter.makeHtml(res[0]['body']);
+                console.log(clicked_body)
 
 
                 // put the right parts of the result into the right boxes.
@@ -158,7 +162,8 @@ $('#update_entry_btn').click(function(){
     for(let i of new_proj_tags_data)
         new_proj_tags.push(i['text']);
 
-    let new_body = quill.getText();
+    let new_body = $("#editor").html();
+    console.log(new_body)
 
 
     // assemble the JSON to send to back end

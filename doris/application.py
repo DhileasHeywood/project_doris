@@ -4,6 +4,7 @@ from doris.models.bid_model import Bid
 import json
 from datetime import date
 from uuid import uuid4
+from markdownify import markdownify as md
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -90,6 +91,8 @@ def entry_search():
 @bp.route("/entry_update", methods=["POST"])
 def entry_update():
     update_data = request.json
+
+    update_data["new_body"] = md(update_data["new_body"], heading_style="ATX")
 
     update_id = update_data["entry_id"]
 
