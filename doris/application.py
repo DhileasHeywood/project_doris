@@ -17,20 +17,25 @@ bp = Blueprint("application", __name__, url_prefix="/application")
 @bp.route("/", methods=["GET", "POST"])
 def index():
     #Retrieving the bid titles to use in search box.
-    results = Bid.search().json()
-    bid_search = [
-        {"id": h["_id"], "title" : h["_source"]["title"]}
-        for h in results["hits"]["hits"]
-    ]
-    bids = {
-        h["_id"]: h["_source"]["title"]
-        for h in results["hits"]["hits"]
-    }
-    session["extant_bids"] = bid_search
+    resp = Bid.search()
+
+    if resp.status_code != 200:
+        print("You have no data!")
+        session["extant_bids"] = []
+    else:
+        results = resp.json()
+        bid_search = [
+            {"id": h["_id"], "title": h["_source"]["title"]}
+            for h in results.get("hits", {}).get("hits")
+        ]
+        bids = {
+            h["_id"]: h["_source"]["title"]
+            for h in results["hits"]["hits"]
+        }
+        session["extant_bids"] = bid_search
 
     # The start page needs to have the ability to start a new bid, and to search existing bids
     if request.method == "POST":
-
 
         if request.form.get("bid_search", None):
 
