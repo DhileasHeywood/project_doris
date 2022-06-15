@@ -1,14 +1,14 @@
 $("#tags_clicked").select2({
     tags: true
-})
+});
 $("#project_tags_clicked").select2({
     tags: true
-})
+});
 
 $('#search_entries_btn').click(function(){
 
      // define query object - a dictionary
-let query_object = { "query": {   }}
+let query_object = { "query": {   }};
 // if tags and/or project tags checked: query object = { query: { term: { tags: "text", project_tags:
 // "text" }}}
 let tagsCheckbox = $('#search_tags_check');
@@ -41,7 +41,7 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
     method:"POST", success:
     function(result){
     console.log(result);
-    let result_array = []
+    let result_array = [];
     for (let res of result)
         //this only works when tags and project_tags are lists.
         result_array.push('<div class="bg-white doris-sr border border-dark m-2 pl-1"' +
@@ -63,18 +63,18 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
       } });
 });
 
-let clicked_id = 0
-let clicked_proj_tags = []
-let clicked_tags = []
-let clicked_body = []
+let clicked_id = 0;
+let clicked_proj_tags = [];
+let clicked_tags = [];
+let clicked_body = [];
 
 function getClickResult(x) {
     //retrieve body of clicked result
     let x_text = x.innerHTML.split('<br>');
-    let x_body = x_text[2].split(': ')[1]
+    let x_body = x_text[2].split(': ')[1];
 
     // retrieve document from elasticsearch
-    query_object = {"query": {"match": {"body": JSON.stringify(x_body)}}}
+    query_object = {"query": {"match": {"body": JSON.stringify(x_body)}}};
 
     $.ajax({
         url: "/application/entry_search", data: JSON.stringify(query_object), dataType: "json", contentType:
@@ -83,25 +83,25 @@ function getClickResult(x) {
             function (result) {
                 // take first result (body search finds all sorts of things, and since the first will be an exact
                 // match every time, I'm comfortable just taking that)
-                let res = result[0]
+                let res = result[0];
 
                 // store result in global object so that it's accessible for other implementation. Don't want to
                 // read HTML because that's SUPER dodgy. Could lead to all sorts of issues. Don't do that.
 
-                clicked_proj_tags = res[0]['project_tags']
-                clicked_tags = res[0]['tags']
+                clicked_proj_tags = res[0]['project_tags'];
+                clicked_tags = res[0]['tags'];
 
                 let converter = new showdown.Converter();
 
                 clicked_body = converter.makeHtml(res[0]['body']);
-                console.log(clicked_body)
+                console.log(clicked_body);
 
 
                 // put the right parts of the result into the right boxes.
                 // Put tags and proj tags as options into select boxes
 
                 // assign an empty list to put tags into
-                let tag_array = []
+                let tag_array = [];
 
                 // put each tag into its own option tag
                 for (let tag of clicked_tags)
@@ -112,7 +112,7 @@ function getClickResult(x) {
 
 
                 // repeat the above for project tags
-                let proj_tag_array = []
+                let proj_tag_array = [];
 
                 for (let tag of clicked_proj_tags)
                     proj_tag_array.push('<option selected="selected">' + tag + '</option>');
@@ -123,7 +123,7 @@ function getClickResult(x) {
                 quill.setText(clicked_body);
 
                 // store the id of the clicked result for later use.
-                clicked_id = res[1]
+                clicked_id = res[1];
 
             }
     });
@@ -213,6 +213,5 @@ $('#add_to_new_section_btn').click(function() {
       }
 
     });
-
 
 })
