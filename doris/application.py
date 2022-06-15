@@ -1,10 +1,12 @@
 import functools
 from doris.models.entry_model import Entry
 from doris.models.bid_model import Bid
+from doris.models.section_model import Section
 import json
 from datetime import date
 from uuid import uuid4
 from markdownify import markdownify as md
+from datetime import date
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -47,7 +49,7 @@ def index():
             if request.form["new_bid_title"] not in extant_bids:
 
                 current_bid = request.form["new_bid_title"]
-                new_id = str(uuid4());
+                new_id = str(uuid4())
                 new_bid = Bid(title=current_bid, user=session["username"], date=str(date.today()), version=0, body="None",
                               sections=["None"], new_id=new_id)
 
@@ -72,6 +74,44 @@ def index():
 
 @bp.route("/entry/<current_bid>/<bid_id>", methods=["GET", "POST"])
 def entry(bid_id=None, current_bid=None):
+
+    section_results = Section.search().json()
+
+    section_search = [
+        {"id": h["_id"], "title" : h["_source"]["title"], "project_tags": h["_source"]["project_tags"]}
+        for h in section_results["hits"]["hits"]
+        ]
+    # create a list of section titles to be searched, and comepared to to prevent duplicate names
+    section_titles = []
+    for sect in section_search:
+        section_titles.append(sect["title"])
+    print("here", section_search)
+    print("over here", section_titles)
+
+
+    if request.method == "POST":
+        # Either the section will already exist, and will have a bid or bids associated with it
+        # or the section will not exist and can be created.
+
+        # If the New Section button is pressed, the title of the section should be checked against
+        # existing section titles
+        new_title = request.form.get("new_section_title")
+        if new_title:
+            if new_title not in section_titles:
+            # if section title already exists, then don't allow
+                new_id = str(uuid4())
+                new_section = Section(title=new_title, tags=None, project_tags=current_bid, user=session["username"],
+                                      version=0, body=None, entries=None, date=str(date.today()), new_id=new_id)
+                new_section.create()
+
+
+        elif request.form.get("search_existing_sections"):
+            pass
+
+        # If the Search Existing Sections button is pressed, then there should be a search bar
+        # similar to that of the search for existing bids search in index.
+
+
     # basic view function for entry page. Passes in params for current bid and bid id so that page can be accessed.
     return render_template("app/entry.html", current_bid=current_bid, bid_id=bid_id)
 
@@ -105,6 +145,17 @@ def entry_update():
 
     # sends the status code to front end to tell it if the update was successful
     return json.dumps(update.status_code)
+
+# @bp.route("/add_section", methods=["POST"])
+# def add_section(section_title=None, current_bid=None):
+#     new_id = str(uuid4())
+#     new_section = Section(title=section_title, tags=None, project_tags=current_bid, user=session["username"], version=0, body=None,
+#                           entries=None, date=None, new_id=new_id)
+#     create = new_section.create()
+#
+#     print(create.status_code)
+#
+#     return json.dumps(create.status_code)
 
 
 @bp.route("/section/<current_bid>/<bid_id>", methods=["GET", "POST"])

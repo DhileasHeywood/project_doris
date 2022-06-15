@@ -189,3 +189,30 @@ $('#update_entry_btn').click(function(){
     });
 
 });
+
+$('#add_to_new_section_btn').click(function() {
+    // send ajax request to add new section to index as with entry update
+    let new_section_title = $("#new_section_title").val();
+
+    console.log(new_section_title)
+
+    $.ajax({
+        url: "/application/add_section", data: JSON.stringify(new_section_title), dataType: "json", contentType:
+            "application/json", method: "POST", success:
+                function (result){
+                    if (result === 200 || result === 201) {
+                        // This will change to a modal for notification.
+                        $(".toast").toast({ delay: 3000});
+                        $(".toast").toast("show");
+
+                    } else {
+                        alert("Something went wrong. Maybe try something else?");
+                    }
+                }, error: function (){
+                console.log("Nothing is happening");
+      }
+
+    });
+
+
+})

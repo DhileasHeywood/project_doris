@@ -2,11 +2,11 @@ from doris.models.es_object import ElasticsearchObject
 # Importing the parent class that the entry class will inherit its elasticsearch functionality from
 
 
-class SectionObject(ElasticsearchObject):
+class Section(ElasticsearchObject):
     es_type = "section"
 
     def __init__(self, **kwargs):
-        super(SectionObject, self).__init__(**kwargs)
+        super(Section, self).__init__(**kwargs)
         if self.data is None:
             self.data = {}
         self.data["title"] = kwargs["title"]
@@ -17,6 +17,7 @@ class SectionObject(ElasticsearchObject):
         self.data["user"] = kwargs["user"]
         self.data["date"] = kwargs["date"]
         self.data["version"] = kwargs["version"]
+        self._id=kwargs["new_id"]
 
     @property
     def title(self):

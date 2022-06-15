@@ -21,6 +21,7 @@ class ElasticsearchObject(object):
 
 
         payload = json.dumps(self.data)
+        print(payload)
         headers = {
             'Content-Type': 'application/json'
         }
