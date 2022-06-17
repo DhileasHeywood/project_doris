@@ -5,7 +5,7 @@ from datetime import date
 # This will be the parent class for entries, sections and bids, as well as images
 
 
-ELASTICSEARCH_URL = "http://localhost:9200/doris-"
+ELASTICSEARCH_URL = "http://localhost:9200/test_one_doris-"
 VERSION_URL = "http://localhost:9200/version/"
 
 
@@ -17,7 +17,7 @@ class ElasticsearchObject(object):
     data = None
 
     def create(self):
-        url = ELASTICSEARCH_URL + self.es_type + "/_create/" + str(self._id)
+        url = ELASTICSEARCH_URL + self.es_type + "/_create/" + str(self.data["id"])
 
 
         payload = json.dumps(self.data)
@@ -26,7 +26,8 @@ class ElasticsearchObject(object):
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.request("PUT", url, headers=headers, data=payload)
+        print(response)
 
         return response
 

@@ -1,6 +1,6 @@
 from doris.models.es_object import ElasticsearchObject
 # Importing the parent class that the entry class will inherit its elasticsearch functionality from
-
+from uuid import uuid4
 
 
 
@@ -19,6 +19,8 @@ class Entry(ElasticsearchObject):
         self.data["version"] = kwargs["version"]
         if kwargs.get("id"):
             self.data["id"] = kwargs["id"]
+        else:
+            self.data["id"] = str(uuid4())
 
     @property
     def tags(self):
