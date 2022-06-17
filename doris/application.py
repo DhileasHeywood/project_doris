@@ -86,12 +86,11 @@ def entry(bid_id=None, current_bid=None):
         {"id": h["_id"], "title" : h["_source"]["title"], "project_tags": h["_source"]["project_tags"]}
         for h in section_results["hits"]["hits"]
         ]
-    # create a list of section titles to be searched, and comepared to to prevent duplicate names
+    session.extant_sections = section_search
+    # create a list of section titles to be searched, and compared to prevent duplicate names
     section_titles = []
     for sect in section_search:
         section_titles.append(sect["title"])
-    print("here", section_search)
-    print("over here", section_titles)
 
 
     if request.method == "POST":
@@ -109,8 +108,11 @@ def entry(bid_id=None, current_bid=None):
                                       version=0, body=None, entries=None, date=str(date.today()), new_id=new_id)
                 new_section.create()
 
+            else:
+                print("This section already exists!")
 
-        elif request.form.get("search_existing_sections"):
+
+        elif request.form.get("search_extant_sections"):
             pass
 
         # If the Search Existing Sections button is pressed, then there should be a search bar

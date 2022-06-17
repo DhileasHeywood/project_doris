@@ -1,3 +1,9 @@
+$( document ).ready(function (){
+    $("#section_search").select2({
+        maximumSelectionLength: 1
+    });
+});
+
 $("#tags_clicked").select2({
     tags: true
 });
@@ -44,7 +50,7 @@ $.ajax({url: "/application/entry_search", data: JSON.stringify(query_object), da
     let result_array = [];
     for (let res of result)
         //this only works when tags and project_tags are lists.
-        result_array.push('<div class="bg-white doris-sr border border-dark m-2 pl-1"' +
+        result_array.push('<div class="bg-white dorigetClickResults-sr border border-dark m-2 pl-1"' +
             ' onmouseover="highlightResult(this)" onmouseout="unhighlightResult(this)"' +
             ' onclick="getClickResult(this)">Tags: ' + res[0]['tags'].join(", ") +
             '<br>Project ' + 'Tags: ' + res[0]['project_tags'].join(", ") + '<br>Body: ' + res[0]['body'] +
@@ -142,9 +148,9 @@ function unhighlightResult(x) {
     x.setAttribute("class", "bg-white doris-sr border border-dark m-2 pl-1")
 }
 
-  var quill = new Quill('#editor', {
-    theme: 'snow'
-  });
+var quill = new Quill('#editor', {
+theme: 'snow'
+});
 
 $('#update_entry_btn').click(function(){
     // retrieve tags from select box
@@ -176,8 +182,8 @@ $('#update_entry_btn').click(function(){
                 function (result){
                     if (result === 200) {
                         // This will change to a modal for notification.
-                        $(".toast").toast({ delay: 3000});
-                        $(".toast").toast("show");
+                        $("#update-toast-test").toast({ delay: 3000});
+                        $("#update-toast-test").toast("show");
 
                     } else {
                         alert("Something went wrong. Maybe try something else?");
@@ -202,8 +208,8 @@ $('#add_to_new_section_btn').click(function() {
                 function (result){
                     if (result === 200 || result === 201) {
                         // This will change to a modal for notification.
-                        $(".toast").toast({ delay: 3000});
-                        $(".toast").toast("show");
+                        $("#add-section-toast").toast({ delay: 3000});
+                        $("#add-section-toast").toast("show");
 
                     } else {
                         alert("Something went wrong. Maybe try something else?");
@@ -215,3 +221,8 @@ $('#add_to_new_section_btn').click(function() {
     });
 
 })
+
+$('#section_search').on('select2:select', function (e) {
+    var data = e.params.data;
+    console.log(data);
+});

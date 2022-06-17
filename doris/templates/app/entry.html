@@ -83,11 +83,11 @@
                                                             data-target="#new_section_modal">New Section</button>
                                                 </div>
                                                 <div class="col-6">
-                                                    <form method="post" id="search_existing_sections">
-                                                        <button class="btn border border-dark" type="submit"
-                                                            name="existing_section" id="existing_section_btn">Search
-                                                        Existing Sections</button>
-                                                    </form>
+                                                    <button class="btn border border-dark"
+                                                        name="extant_section" id="extant_section_btn"
+                                                            data-toggle="modal"
+                                                            data-target="#extant_section_modal">Search
+                                                    Existing Sections</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,8 +101,10 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>div#extant_section_modal
                                 <div class="modal-body">
                                     <div id="modal-body">
                                         <form method="POST" id="start_new_section">
@@ -117,6 +119,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="extant_section_modal" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="search_extant_section_title">Search Existing
+                                        Sections</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="modal-body">
+                                <div class="row m-2">
+                                        <form method="post" id="search_extant_sections" name="search_extant_sections">
+                                            <select class="form-control col border border-dark" multiple="multiple"
+                                                    id="section_search" style="height:
+                                40px; width: 300px" name="section_search">
+                                                {% for section in session.extant_sections %}
+                                                    <option value="{{ section["id"] }}">{{ section["title"] }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </form>
+                                    </div>
+                                    <div class="row m-2">Section Preview</div>
+                                    <div class="row m-2" style="height:500px">
+                                        <div class="row ml-2 my-2" style="height: 40px;">
+                                            <select class="form-control col border border-dark h-100"
+                                                    multiple="multiple" id="project_tags_preview"></select>
+                                        </div>
+                                        <div class="row ml-2 my-2" style="height: 40px;">
+                                            <select class="form-control col border border-dark h-100"
+                                                    multiple="multiple" id="tags_preview"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" id="extant_sections_modal_footer">
+                                    <input class="btn border border-dark" type="submit" value="Add to Section"
+                                           id="search_section_btn">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-3">
                         <div><a class="btn border border-dark" href="{{ url_for("application.section",
         bid_id=bid_id, current_bid=current_bid) }}">Go to Section Assembly</a></div>
@@ -125,13 +168,24 @@
             </div>
         </div>
         <div id="update-toast" style="position: absolute; top: 0; right: 0; min-width: 300px;">
-            <div class="toast fade">
+            <div class="toast fade" id="update-toast-test">
                 <div class="toast-header">
                     <strong class="mr-auto text-success"><i class="fa fa-check"></i> Success! </strong>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
                 </div>
                 <div class="toast-body">
                     Entry has successfully been updated!
+                </div>
+            </div>
+        </div>
+        <div id="section-toast" style="position: absolute; top: 0; right: 0; min-width: 300px;">
+            <div class="toast fade" id="add-section-toast">
+                <div class="toast-header">
+                    <strong class="mr-auto text-success"><i class="fa fa-check"></i> Success! </strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+                </div>
+                <div class="toast-body">
+                    Entry has successfully been added to section!
                 </div>
             </div>
         </div>
