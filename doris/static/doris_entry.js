@@ -224,5 +224,11 @@ $('#add_to_new_section_btn').click(function() {
 
 $('#section_search').on('select2:select', function (e) {
     var data = e.params.data;
-    console.log(data);
+    console.log(data["id"]);
+    $.ajax({
+        url: "/application/section_search", data: JSON.stringify(data["id"]), dataType: "json", contentType: "application/json", method: "POST", success:
+        function (result){
+            console.log(result)
+        }
+    })
 });

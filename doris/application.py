@@ -81,11 +81,8 @@ def index():
 def entry(bid_id=None, current_bid=None):
 
     section_results = Section.search().json()
-
-    section_search = [
-        {"id": h["_id"], "title" : h["_source"]["title"], "project_tags": h["_source"]["project_tags"]}
-        for h in section_results["hits"]["hits"]
-        ]
+    section_search = [{"id": h["_id"], "title" : h["_source"]["title"], "project_tags": h["_source"]["project_tags"]}
+        for h in section_results["hits"]["hits"]]
     session.extant_sections = section_search
     # create a list of section titles to be searched, and compared to prevent duplicate names
     section_titles = []
@@ -153,17 +150,24 @@ def entry_update():
     # sends the status code to front end to tell it if the update was successful
     return json.dumps(update.status_code)
 
-# @bp.route("/add_section", methods=["POST"])
-# def add_section(section_title=None, current_bid=None):
-#     new_id = str(uuid4())
-#     new_section = Section(title=section_title, tags=None, project_tags=current_bid, user=session["username"], version=0, body=None,
-#                           entries=None, date=None, new_id=new_id)
-#     create = new_section.create()
-#
-#     print(create.status_code)
-#
-#     return json.dumps(create.status_code)
+@bp.route("/section_search", methods=["POST"])
+def section_search():
+#   take the result from the select box
+#   use it to retrieve a dictionary entry
+#   return the dictionary entry for use by the front end
 
+    section_results = Section.search().json()
+
+    section_search_by_id = {
+        h["_id"]: {
+            "id": h["_id"],
+            "title": h["_source"]["title"],
+            "project_tags": h["_source"]["project_tags"]}
+        for h in section_results["hits"]["hits"]
+    }
+    id = section_search_by_id[request.json]
+
+    return json.dumps(id)
 
 @bp.route("/section/<current_bid>/<bid_id>", methods=["GET", "POST"])
 def section(bid_id=None, current_bid=None):
