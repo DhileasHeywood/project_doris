@@ -228,7 +228,14 @@ $('#section_search').on('select2:select', function (e) {
     $.ajax({
         url: "/application/section_search", data: JSON.stringify(data["id"]), dataType: "json", contentType: "application/json", method: "POST", success:
         function (result){
-            console.log(result)
+            console.log(result["project_tags"])
+            let proj_tag_array = [];
+
+            for (let tag of result["project_tags"])
+                proj_tag_array.push('<option selected="selected">' + tag + '</option>');
+
+            $("#project_tags_preview").html(proj_tag_array);
+            $("#tags_preview").html(proj_tag_array);
         }
     })
 });
